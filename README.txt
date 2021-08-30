@@ -3,11 +3,11 @@ dualfisheye2equi: warps a dualfisheye image to an equirectangular image
 August 2017, August 2021
 Author: G. Caron
 Contact: guillaume.caron@u-picardie.fr
-s
+
 Prerequisities
 0. CMake (version 3.14.5 tested)
-2. ViSP (version 3.2.0 tested)
-3. libPeR_base (version 0.0.2 tested, https://github.com/PerceptionRobotique/libPeR_base)
+1. ViSP (version 3.2.0 tested)
+2. libPeR_base (version 0.0.2 tested, https://github.com/PerceptionRobotique/libPeR_base)
 
 Configure and prepare equi2omni to build with catkin
 0. export PER_DIR=/path/to/libPeR_base/build/
@@ -17,8 +17,8 @@ Configure and prepare equi2omni to build with catkin
 
 Run dualfisheye2equi
 0. Create a "media" directory next to the "build" directory
-1. Download examples of dualfisheye images in the media directory: https://mis.u-picardie.fr/~panoramis/Sequences/Sequence7-L1-0-9.zip (please see the PanoraMIS official website https://mis.u-picardie.fr/~panoramis for a much more dataset)
-1. run from the command line
+1. Download examples of dualfisheye images in the media directory: https://mis.u-picardie.fr/~panoramis/Sequences/Sequence7-L1-0-9.zip (please see the PanoraMIS official website https://mis.u-picardie.fr/~panoramis for the full list of image sequences)
+2. run from the command line
   ./dualfisheye2equi ../data/RicohThetaS_calib.xml ../media/ 0 9 1 ../media/maskFull.png ../media/poses.txt 1
 command line arguments are:
 * xmlFic the dualfisheye camera calibration xml file (the data directory stores an example of a dualfisheye camera xml file)
