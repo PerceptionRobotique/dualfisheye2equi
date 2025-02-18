@@ -7,6 +7,8 @@ IF(VISP_FOUND)
 	INCLUDE(${VISP_USE_FILE})
 ENDIF(VISP_FOUND)
 
+FIND_PACKAGE(Boost REQUIRED filesystem regex)
+
 # libPeR COmni related functionalities...
 find_package(PER REQUIRED per_core per_io)
 if(PER_FOUND)
@@ -18,3 +20,6 @@ ADD_EXECUTABLE(dualfisheye2equi
 		dualfisheye2equi.cpp
 )
 
+MESSAGE(${Boost_LIBRARIES})
+
+target_link_libraries(dualfisheye2equi ${Boost_LIBRARIES})

@@ -188,6 +188,10 @@ int main(int argc, char **argv)
         while(!ficPosesInit.eof())
         {
             ficPosesInit >> r[0] >> r[1] >> r[2] >> r[3] >> r[4] >> r[5];
+						r[0] = r[1] = r[2] = 0;
+						//r[3] -= M_PI;
+						//r[5] = r[5];
+						//std::cout << r.t() << std::endl;
             v_pv_init.push_back(r);
         }
         ficPosesInit.close();
@@ -219,7 +223,8 @@ int main(int argc, char **argv)
     v_temps.reserve((i360-i0)/iStep);
     
     vpHomogeneousMatrix cMc0, erMdf;
-    erMdf.buildFrom(0, 0, 0, 0, 0, M_PI*0.5);
+    erMdf.buildFrom(0, 0, 0, 0, 0, 0);
+    //erMdf.buildFrom(0, 0, 0, 0, 0, -M_PI*0.5);
     
     vpImage<vpRGBa> I_df; //Dual fisheye image
     vpImage<vpRGBa> I_er; //Equirectangular image
@@ -253,6 +258,7 @@ int main(int argc, char **argv)
             {
                 std::cout << iter->path().string() << " loaded" << std::endl;
                 vpImageIo::read(I_df, iter->path().string());
+              	filename = iter->path().filename().string();
                 break;
             }
         }
@@ -273,9 +279,9 @@ int main(int argc, char **argv)
         vpDisplay::display(I_df);
         vpDisplay::flush(I_df);
         
-        if(v_pv_init.size() > nbPass)
+        if(v_pv_init.size() > imNum)
         {
-            cMc0.buildFrom(v_pv_init[nbPass]);
+            cMc0.buildFrom(v_pv_init[imNum]);
             if(inversePose)
                 cMc0 = cMc0.inverse();
         }
@@ -386,7 +392,8 @@ int main(int argc, char **argv)
         //save the equirectangular image
         s.str("");
         s.setf(std::ios::right, std::ios::adjustfield);
-        s << chemin << "/e_" << std::setfill('0') << std::setw(6) << imNum << "." << ext;
+        //s << chemin << "/e_" << std::setfill('0') << std::setw(6) << imNum << "." << ext;
+        s << chemin << "/images_equirectangular/" << filename;
         filename = s.str();
         vpImageIo::write(I_er, filename);
         
