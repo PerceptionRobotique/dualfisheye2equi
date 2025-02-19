@@ -75,6 +75,15 @@ int main(int argc, char **argv)
     
     vpHomogeneousMatrix c2Rc1 = stereoCam.sjMr[1];
 
+    c2Rc1[0][3] *= 0.5;
+    c2Rc1[1][3] *= 0.5;
+    c2Rc1[2][3] *= 0.5;
+    
+    vpHomogeneousMatrix s1Mr;
+    s1Mr[0][3] = -c2Rc1[0][3];
+    s1Mr[1][3] = -c2Rc1[1][3];
+    s1Mr[2][3] = -c2Rc1[2][3];
+
 #ifdef VERBOSE
     std::cout << "Loading the XML file to an empty rig..." << std::endl;
     
@@ -292,6 +301,7 @@ int main(int argc, char **argv)
         
         //Dual fisheye to equirectangular
         pt_bitmap_er = I_er.bitmap;
+        double rho = 1.0; //5.0
         for(unsigned int v_er = 0 ; v_er < imHeight ; v_er++)
         {
             for(unsigned int u_er = 0 ; u_er < imWidth ; u_er++, pt_bitmap_er++)
@@ -301,15 +311,23 @@ int main(int argc, char **argv)
                 P.set_v(v_er);
                 equirectCam.pixelMeterConversion(P);
                 equirectCam.projectImageSphere(P, Xs, Ys, Zs);
+
+                Xs *= rho;
+                Ys *= rho;
+                Zs *= rho;
+
                 //sphere rotation
                 P.set_oX(Xs);
                 P.set_oY(Ys);
                 P.set_oZ(Zs);
                 P.changeFrame(cMc0);
+
                 //sphere to dual fisheye
                 if(P.get_Z() > 0)
                 {
                     icam = 0;
+
+                    P.sX = P.sX.changeFrame(s1Mr);
                 }
                 else
                 {
