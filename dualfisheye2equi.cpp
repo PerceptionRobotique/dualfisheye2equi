@@ -73,16 +73,16 @@ int main(int argc, char **argv)
         fromFile >> stereoCam;
     }
     
-    vpHomogeneousMatrix c2Rc1 = stereoCam.sjMr[1];
+    vpHomogeneousMatrix c2Mc1 = stereoCam.sjMr[1];
 
-    c2Rc1[0][3] *= 0.5;
-    c2Rc1[1][3] *= 0.5;
-    c2Rc1[2][3] *= 0.5;
+    c2Mc1[0][3] *= 0.5;
+    c2Mc1[1][3] *= 0.5;
+    c2Mc1[2][3] *= 0.5;
     
     vpHomogeneousMatrix s1Mr;
-    s1Mr[0][3] = -c2Rc1[0][3];
-    s1Mr[1][3] = -c2Rc1[1][3];
-    s1Mr[2][3] = -c2Rc1[2][3];
+    s1Mr[0][3] = -c2Mc1[0][3];
+    s1Mr[1][3] = -c2Mc1[1][3];
+    s1Mr[2][3] = -c2Mc1[2][3];
 
 #ifdef VERBOSE
     std::cout << "Loading the XML file to an empty rig..." << std::endl;
@@ -332,7 +332,7 @@ int main(int argc, char **argv)
                 else
                 {
                     icam = 1;
-                    P.sX = P.sX.changeFrame(c2Rc1);
+                    P.sX = P.sX.changeFrame(c2Mc1);
                 }
                 
                 //if(P.get_Z() > 0.0)
